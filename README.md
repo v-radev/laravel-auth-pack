@@ -8,7 +8,7 @@ ___
 
 ### Installation
 
-
+- Make a Cluster/ folder within app/ and copy AuthCluster/ inside
 - Make sure Cache is enabled and you have a valid working cache driver
 - Install laracasts/flash composer package
 - Install laravelcollective/html composer package
