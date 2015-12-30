@@ -21,6 +21,15 @@ class RegisterFunctionalCest
         $this->userActor = new \Actors\UserActor;
     }
 
+    public function it_validates_required_fields( FunctionalTester $I )
+    {//For coverage
+        $I->amOnRoute( RegisterPage::$ROUTE);
+        $I->submitForm(RegisterPage::$formId, [], 'Register');
+        $I->see('The username field is required.');
+        $I->see('The email field is required.');
+        $I->see('The password field is required.');
+        $I->dontSee('The name field is required.');
+    }
 
     public function it_has_record_in_db_after_registration ( FunctionalTester $I )
     {

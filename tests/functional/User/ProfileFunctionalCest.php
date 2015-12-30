@@ -1,6 +1,5 @@
 <?php
 
-use App\Clusters\AuthCluster\Models\User;
 use Page\User\ProfilePage;
 
 
@@ -18,6 +17,17 @@ class ProfileFunctionalCest
         $this->userActor = new \Actors\UserActor;
     }
 
+
+    public function it_allows_users_to_view_their_profiles( AcceptanceTester $I )
+    {//For coverage
+        $user = $this->userActor->makeLoggedUser($I);
+
+        $I->amOnRoute('profile.show', $user->username);
+
+        $I->seeInCurrentUrl('profile/'. $user->username);
+        $I->seeCurrentRouteIs('profile.show', $user->username);
+        $I->see('Profile of user '. $user->username);
+    }
 
     public function it_successfully_updates_profile( FunctionalTester $I )
     {
