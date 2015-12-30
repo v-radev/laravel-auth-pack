@@ -16,15 +16,12 @@ trait ResetsPasswordsTrait
 
     public function getReset($token = null)
     {
-        if (is_null($token)) {
-            throw new NotFoundHttpException;
-        }
-
         return view('authcluster.auth.reset')->with('token', $token);
     }
 
     public function postEmail(Request $request)
     {
+        $redirect = NULL;
         $this->validate($request, ['email' => 'required|email']);
 
         $response = Password::sendResetLink($request->only('email'), function (Message $message) {
@@ -34,11 +31,14 @@ trait ResetsPasswordsTrait
         switch ($response) {
             case Password::RESET_LINK_SENT:
                 Flash::success('Reset link was successfully sent. Please check your email.');
-                return redirect()->back();
-
+                $redirect = redirect()->back();
+                break;
             case Password::INVALID_USER:
-                return redirect()->back()->withErrors(['email' => 'This e-mail does not exist in our database.']);
+                $redirect = redirect()->back()->withErrors(['email' => 'This e-mail does not exist in our database.']);
+                break;
         }
+
+        return $redirect;
     }
 
     protected function getEmailSubject()
@@ -94,7 +94,6 @@ trait ResetsPasswordsTrait
             case 'passwords.token':
                 $response = 'Your token or URL for password reset is not valid.';
                 break;
-            default:
         }
 
         return $response;
