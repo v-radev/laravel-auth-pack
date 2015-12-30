@@ -4,6 +4,12 @@ php: >=5.5.9
 laravel/framework: 5.1.*
 ```
 
+### Codeception tests coverage:
+```
+Classes: 94.12% (16/17)  
+Methods: 91.53% (54/59) 
+Location: tests/_output/coverage/
+```
 ___
 
 ### Installation
