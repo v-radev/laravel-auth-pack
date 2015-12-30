@@ -20,10 +20,6 @@ abstract class DefaultController extends Controller {
 
     protected function redirectPath()
     {
-        if (property_exists($this, 'redirectPath')) {
-            return $this->redirectPath;
-        }
-
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
+        return property_exists($this, 'redirectPath') ? $this->redirectPath : '/';
     }
 }
