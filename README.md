@@ -1,7 +1,9 @@
 ### Requirements:
 ```
-php: >=5.5.9
+php: >= 5.5.9
 laravel/framework: 5.1.*
+laracasts/flash": ^1.3
+laravelcollective/html": ^5.1
 ```
 
 ### Codeception tests coverage:
@@ -16,8 +18,6 @@ ___
 
 - Make a Cluster/ folder within app/ and copy AuthCluster/ inside
 - Make sure Cache is enabled and you have a valid working cache driver
-- Install laracasts/flash composer package
-- Install laravelcollective/html composer package
 - In RouteServiceProvider@boot add:
 ```
 $router->bind('userName', function ($username) {
