@@ -10,7 +10,7 @@ class RolePermissionRepository extends Repository
      */
     protected $model;
 
-    protected $_roleSeeds = ['admin', 'moderator', 'user'];
+    protected $_roleSeeds = [ 'admin', 'moderator', 'user' ];
 
 
     public function __construct( RolePermission $model )
@@ -21,12 +21,12 @@ class RolePermissionRepository extends Repository
 
     public function getSeeds()
     {
-        $rolePermSeed = \App::make('App\Clusters\AuthCluster\Repositories\Seeds\RolePermissionSeedRepository');
-        $seeds = [];
+        $rolePermSeed = \App::make( 'App\Clusters\AuthCluster\Repositories\Seeds\RolePermissionSeedRepository' );
+        $seeds = [ ];
 
         foreach ( $this->_roleSeeds as $role ) {
-            $seedMethod = 'get'. ucfirst($role) .'Seeds';
-            $seeds = array_merge($seeds, $rolePermSeed->$seedMethod());
+            $seedMethod = 'get' . ucfirst( $role ) . 'Seeds';
+            $seeds = array_merge( $seeds, $rolePermSeed->$seedMethod() );
         }
 
         return $seeds;

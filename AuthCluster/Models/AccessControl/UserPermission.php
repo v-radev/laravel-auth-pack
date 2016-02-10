@@ -7,7 +7,7 @@ class UserPermission extends Model
 
     protected $table = 'user_permission';
 
-    protected $fillable = ['user_id', 'permission_id'];
+    protected $fillable = [ 'user_id', 'permission_id' ];
 
     public static $tableName = 'user_permission';
 

@@ -12,11 +12,11 @@ class CreatePermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions', function(Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 160);
+        Schema::create( 'permissions', function ( Blueprint $table ) {
+            $table->increments( 'id' );
+            $table->string( 'name', 160 );
             $table->timestamps();
-        });
+        } );
     }
 
     /**
@@ -26,6 +26,6 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('permissions');
+        Schema::drop( 'permissions' );
     }
 }

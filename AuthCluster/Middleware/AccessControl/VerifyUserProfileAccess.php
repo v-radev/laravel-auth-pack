@@ -8,11 +8,12 @@ class VerifyUserProfileAccess
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
+     *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle( $request, Closure $next )
     {
         $authUser = Auth::user();
 
@@ -21,11 +22,11 @@ class VerifyUserProfileAccess
             !$request->userName || //This is binded in RouteServiceProvider
             $request->userName->username != $authUser->username
         ) {
-            if ( !$authUser->can('editUserProfiles') ) {
-                return \Redirect::route('profile.edit', $authUser->username);
+            if ( !$authUser->can( 'editUserProfiles' ) ) {
+                return \Redirect::route( config( 'authcluster.profiles_name_space' ) . '.edit', $authUser->username );
             }
         }
 
-        return $next($request);
+        return $next( $request );
     }
 }

@@ -1,6 +1,6 @@
 <?php namespace App\Clusters\AuthCluster\Controllers\User;
 
-use App\Clusters\AuthCluster\Controllers\DefaultController;
+use App\Clusters\AuthCluster\Controllers\MasterController;
 use App\Clusters\AuthCluster\Repositories\UserRepository;
 use App\Clusters\AuthCluster\Traits\User\AuthenticatesUsersTrait;
 use App\Clusters\AuthCluster\Traits\User\RegistersUsersTrait;
@@ -9,11 +9,11 @@ use App\Clusters\AuthCluster\Models\User;
 use Illuminate\Http\Request;
 use Validator;
 
+class AuthController extends MasterController
+{
 
-class AuthController extends DefaultController {
 
-
-	use AuthenticatesUsersTrait, RegistersUsersTrait, ThrottlesLoginsTrait;
+    use AuthenticatesUsersTrait, RegistersUsersTrait, ThrottlesLoginsTrait;
 
 
     const MAX_LOGIN_ATTEMPTS = 3;
@@ -22,7 +22,7 @@ class AuthController extends DefaultController {
 
     protected $redirectPath = '/';
 
-    protected $loginPath = 'auth.login';
+    protected $loginPath = '';
 
     /**
      * @var UserRepository
@@ -33,10 +33,12 @@ class AuthController extends DefaultController {
 
 
     public function __construct( UserRepository $repo )
-	{
+    {
         parent::__construct();
 
-		$this->middleware('only.guests', ['except' => 'getLogout']);
+        $this->loginPath = config( 'authcluster.login_name_space' ) . '.login';
+
+        $this->middleware( 'only.guests', [ 'except' => 'getLogout' ] );
 
         $this->repo = $repo;
     }
@@ -44,21 +46,21 @@ class AuthController extends DefaultController {
 
     protected function validator( Request $request )
     {
-        $data = $this->registerCredentials($request);
+        $data = $this->registerCredentials( $request );
 
-        $validator = Validator::make($data, User::$registerRules);
+        $validator = Validator::make( $data, User::$registerRules );
 
         return $validator;
     }
 
     protected function registerCredentials( Request $request )
     {
-        return $request->only('name', 'username', 'email', 'password', 'password_confirmation');
+        return $request->only( 'name', 'username', 'email', 'password', 'password_confirmation' );
     }
 
     protected function create( array $data )
     {
-        return $this->repo->create($data);
+        return $this->repo->create( $data );
     }
 
 }

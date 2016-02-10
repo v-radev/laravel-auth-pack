@@ -7,7 +7,7 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        \DB::table('users')->truncate();
+        \DB::table( 'users' )->truncate();
 
         $users = [
             [
@@ -42,10 +42,10 @@ class UsersTableSeeder extends Seeder
             ],
         ];
 
-        $repo = \App::make('\App\Clusters\AuthCluster\Repositories\UserRepository');
-        
+        $repo = \App::make( '\App\Clusters\AuthCluster\Repositories\UserRepository' );
+
         foreach ( $users as $user ) {
-            $repo->create($user);
+            $repo->create( $user );
         }
 
     }

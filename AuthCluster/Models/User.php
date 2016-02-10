@@ -9,9 +9,10 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
 
-	use Authenticatable, CanResetPassword, ControlsUserAccessTrait;
+    use Authenticatable, CanResetPassword, ControlsUserAccessTrait;
 
 
     public static $tableName = 'users';
@@ -29,30 +30,30 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'password' => [ 'sometimes', 'confirmed', 'min:6', 'max:160' ]
     ];
 
-	protected $fillable = ['name', 'username', 'email', 'password'];
+    protected $fillable = [ 'name', 'username', 'email', 'password' ];
 
-	protected $hidden = ['password', 'remember_token'];
+    protected $hidden = [ 'password', 'remember_token' ];
 
 
     public function roleRelation()
     {
-        return $this->hasOne('App\Clusters\AuthCluster\Models\AccessControl\UserRole');
+        return $this->hasOne( 'App\Clusters\AuthCluster\Models\AccessControl\UserRole' );
     }
 
     public function permissionsRelation()
     {
-        return $this->hasMany('App\Clusters\AuthCluster\Models\AccessControl\UserPermission');
+        return $this->hasMany( 'App\Clusters\AuthCluster\Models\AccessControl\UserPermission' );
     }
 
 
-    public function setPasswordAttribute($value)
+    public function setPasswordAttribute( $value )
     {
-        $this->attributes['password'] = Hash::make($value);
+        $this->attributes['password'] = Hash::make( $value );
     }
 
-    public function setUsernameAttribute($value)
+    public function setUsernameAttribute( $value )
     {
-        $this->attributes['username'] = strtolower($value);
+        $this->attributes['username'] = strtolower( $value );
     }
 
 
@@ -61,7 +62,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $rules = $this->_updateRules;
 
         if ( $this->id && $this->email ) {
-            $rules['email'][] = 'unique:users,email,'. $this->id;
+            $rules['email'][] = 'unique:users,email,' . $this->id;
         }
 
         return $rules;
@@ -69,27 +70,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function isCurrent()
     {
-        if (Auth::guest()) return FALSE;
+        if ( Auth::guest() ) return FALSE;
 
         return Auth::user()->id == $this->id;
     }
 
     public function permissions()
     {
-        if ( !$this->id ) return [];
+        if ( !$this->id ) return [ ];
 
-        $repo = \App::make('App\Clusters\AuthCluster\Repositories\UserRepository');
+        $repo = \App::make( 'App\Clusters\AuthCluster\Repositories\UserRepository' );
 
-        return $repo->getPermissions($this->id);
+        return $repo->getPermissions( $this->id );
     }
 
     public function role()
     {
-        if ( !$this->id ) return [];
+        if ( !$this->id ) return [ ];
 
-        $repo = \App::make('App\Clusters\AuthCluster\Repositories\UserRepository');
+        $repo = \App::make( 'App\Clusters\AuthCluster\Repositories\UserRepository' );
 
-        return $repo->getRole($this->id);
+        return $repo->getRole( $this->id );
     }
 
 }

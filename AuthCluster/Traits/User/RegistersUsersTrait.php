@@ -8,21 +8,21 @@ trait RegistersUsersTrait
 
     public function getRegister()
     {
-        return view('authcluster.auth.register');
+        return view( $this->viewsNamespace . 'auth.register' );
     }
 
-    public function postRegister(Request $request)
+    public function postRegister( Request $request )
     {
-        $validator = $this->validator($request);
+        $validator = $this->validator( $request );
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        if ( $validator->fails() ) {
+            return redirect()->back()->withErrors( $validator )->withInput();
         }
 
-        $data = $this->registerCredentials($request);
+        $data = $this->registerCredentials( $request );
 
-        Auth::login($this->create($data));
+        Auth::login( $this->create( $data ) );
 
-        return redirect($this->redirectPath());
+        return redirect( $this->redirectPath() );
     }
 }

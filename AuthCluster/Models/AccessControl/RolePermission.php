@@ -7,11 +7,11 @@ class RolePermission extends Model
 
     protected $table = 'role_permission';
 
-    protected $fillable = ['role_id', 'permission_id'];
+    protected $fillable = [ 'role_id', 'permission_id' ];
 
 
     public function permission()
     {
-        return $this->hasOne('App\Clusters\AuthCluster\Models\AccessControl\Permission', 'id', 'permission_id');
+        return $this->hasOne( 'App\Clusters\AuthCluster\Models\AccessControl\Permission', 'id', 'permission_id' );
     }
 }

@@ -1,22 +1,23 @@
 <?php namespace App\Clusters\AuthCluster\Controllers\User;
 
-use App\Clusters\AuthCluster\Controllers\DefaultController;
+use App\Clusters\AuthCluster\Controllers\MasterController;
 use App\Clusters\AuthCluster\Traits\User\ResetsPasswordsTrait;
 
-class PasswordController extends DefaultController {
+class PasswordController extends MasterController
+{
 
 
-	use ResetsPasswordsTrait;
+    use ResetsPasswordsTrait;
 
 
     public $subject = 'App - Password Reset Link';
 
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         parent::__construct();
 
-		$this->middleware('only.guests');
-	}
+        $this->middleware( 'only.guests' );
+    }
 
 }

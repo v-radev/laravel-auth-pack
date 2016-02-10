@@ -1,49 +1,56 @@
 <?php namespace App\Clusters\AuthCluster\Repositories\Contracts;
 
 
-interface RepositoryInterface {
+interface RepositoryInterface
+{
 
     /**
      * @param array $columns
+     *
      * @return mixed
      */
-    public function all($columns = ['*']);
+    public function all( $columns = [ '*' ] );
 
     /**
-     * @param $perPage
+     * @param       $perPage
      * @param array $columns
+     *
      * @return mixed
      */
-    public function paginate($perPage = 1, $columns = ['*']);
+    public function paginate( $perPage = 1, $columns = [ '*' ] );
 
     /**
-     * @param $id
+     * @param       $id
      * @param array $columns
+     *
      * @return mixed
      */
-    public function find($id, $columns = ['*']);
+    public function find( $id, $columns = [ '*' ] );
 
     /**
-     * @param $id
+     * @param       $id
      * @param array $columns
+     *
      * @return mixed
      */
-    public function findOrFail($id, $columns = ['*']);
+    public function findOrFail( $id, $columns = [ '*' ] );
 
     /**
-     * @param $field
-     * @param $value
+     * @param       $field
+     * @param       $value
      * @param array $columns
+     *
      * @return mixed
      */
-    public function findBy($field, $value, $columns = ['*']);
+    public function findBy( $field, $value, $columns = [ '*' ] );
 
     /**
-     * @param $field
-     * @param $value
+     * @param       $field
+     * @param       $value
      * @param array $columns
+     *
      * @return mixed
      */
-    public function findAllBy($field, $value, $columns = ['*']);
+    public function findAllBy( $field, $value, $columns = [ '*' ] );
 
 }

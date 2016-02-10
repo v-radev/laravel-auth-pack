@@ -6,7 +6,8 @@ use App\Clusters\AuthCluster\Models\AccessControl\UserRole;
 use App\Clusters\AuthCluster\Models\AccessControl\UserPermission;
 use App\Clusters\AuthCluster\Models\User;
 
-class UserRepository extends Repository {
+class UserRepository extends Repository
+{
 
     /**
      * @var User
@@ -38,13 +39,13 @@ class UserRepository extends Repository {
 
     public function create( array $data )
     {
-        $user = $this->model->create($data);
+        $user = $this->model->create( $data );
         $permissions = Permission::$defaultPermissions;
 
-        $user->setRole(Role::$defaultRole);
+        $user->setRole( Role::$defaultRole );
 
         foreach ( $permissions as $permission ) {
-            $user->attachPermission($permission);
+            $user->attachPermission( $permission );
         }
 
         return $user;
@@ -56,13 +57,13 @@ class UserRepository extends Repository {
         $PT = $this->permissionsTable;
         $UPT = $this->userPermissionTable;
 
-        return \DB::table($UT)
-                    ->where($UT.'.id', '=', $id)
-                    ->join($UPT, $UT.'.id', '=', $UPT.'.user_id')
-                    ->join($PT, $UPT.'.permission_id', '=', $PT.'.id')
-                    ->select($PT.'.id', $PT.'.name')
-                    ->orderBy($PT.'.name', 'asc')
-                    ->get();
+        return \DB::table( $UT )
+            ->where( $UT . '.id', '=', $id )
+            ->join( $UPT, $UT . '.id', '=', $UPT . '.user_id' )
+            ->join( $PT, $UPT . '.permission_id', '=', $PT . '.id' )
+            ->select( $PT . '.id', $PT . '.name' )
+            ->orderBy( $PT . '.name', 'asc' )
+            ->get();
     }
 
     public function getRole( $id )
@@ -71,13 +72,13 @@ class UserRepository extends Repository {
         $RT = $this->rolesTable;
         $URT = $this->userRoleTable;
 
-        $data = \DB::table($UT)
-                    ->where($UT.'.id', '=', $id)
-                    ->join($URT, $UT.'.id', '=', $URT.'.user_id')
-                    ->join($RT, $URT.'.role_id', '=', $RT.'.id')
-                    ->select($RT.'.id', $RT.'.name')
-                    ->get();
+        $data = \DB::table( $UT )
+            ->where( $UT . '.id', '=', $id )
+            ->join( $URT, $UT . '.id', '=', $URT . '.user_id' )
+            ->join( $RT, $URT . '.role_id', '=', $RT . '.id' )
+            ->select( $RT . '.id', $RT . '.name' )
+            ->get();
 
-        return array_shift($data);
+        return array_shift( $data );
     }
 }

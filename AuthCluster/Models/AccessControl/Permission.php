@@ -11,6 +11,6 @@ class Permission extends Model
 
     public static $tableName = 'permissions';
 
-    public static $defaultPermissions = ['browseWebsite'];
+    public static $defaultPermissions = [ 'browseWebsite' ];
 
 }

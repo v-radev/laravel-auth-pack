@@ -7,16 +7,16 @@ class RolesTableSeeder extends Seeder
 {
     public function run()
     {
-        \DB::table('roles')->truncate();
+        \DB::table( 'roles' )->truncate();
 
         $roles = [
-            ['name' => 'admin', 'display' => 'Administrator'],
-            ['name' => 'moderator', 'display' => 'Moderator'],
-            ['name' => 'user', 'display' => 'User'],
+            [ 'name' => 'admin', 'display' => 'Administrator' ],
+            [ 'name' => 'moderator', 'display' => 'Moderator' ],
+            [ 'name' => 'user', 'display' => 'User' ],
         ];
 
         foreach ( $roles as $role ) {
-            \App\Clusters\AuthCluster\Models\AccessControl\Role::create($role);
+            \App\Clusters\AuthCluster\Models\AccessControl\Role::create( $role );
         }
     }
 }

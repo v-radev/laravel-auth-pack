@@ -11,30 +11,30 @@ trait ResetsPasswordsTrait
 
     public function getEmail()
     {
-        return view('authcluster.auth.password');
+        return view( $this->viewsNamespace . 'auth.password' );
     }
 
-    public function getReset($token = null)
+    public function getReset( $token = null )
     {
-        return view('authcluster.auth.reset')->with('token', $token);
+        return view( $this->viewsNamespace . 'auth.reset' )->with( 'token', $token );
     }
 
-    public function postEmail(Request $request)
+    public function postEmail( Request $request )
     {
         $redirect = NULL;
-        $this->validate($request, ['email' => 'required|email']);
+        $this->validate( $request, [ 'email' => 'required|email' ] );
 
-        $response = Password::sendResetLink($request->only('email'), function (Message $message) {
-            $message->subject($this->getEmailSubject());
-        });
+        $response = Password::sendResetLink( $request->only( 'email' ), function ( Message $message ) {
+            $message->subject( $this->getEmailSubject() );
+        } );
 
-        switch ($response) {
+        switch ( $response ) {
             case Password::RESET_LINK_SENT:
-                Flash::success('Reset link was successfully sent. Please check your email.');
+                Flash::success( 'Reset link was successfully sent. Please check your email.' );
                 $redirect = redirect()->back();
                 break;
             case Password::INVALID_USER:
-                $redirect = redirect()->back()->withErrors(['email' => 'This e-mail does not exist in our database.']);
+                $redirect = redirect()->back()->withErrors( [ 'email' => 'This e-mail does not exist in our database.' ] );
                 break;
         }
 
@@ -43,39 +43,41 @@ trait ResetsPasswordsTrait
 
     protected function getEmailSubject()
     {
-        return isset($this->subject) ? $this->subject : 'Your Password Reset Link';
+        return isset( $this->subject ) ? $this->subject : 'Your Password Reset Link';
     }
 
-    public function postReset(Request $request)
+    public function postReset( Request $request )
     {
-        $this->validate($request, [
-            'token' => 'required',
-            'email' => 'required|email',
+        $this->validate( $request, [
+            'token'    => 'required',
+            'email'    => 'required|email',
             'password' => 'required|confirmed',
-        ]);
+        ] );
 
         $credentials = $request->only(
             'email', 'password', 'password_confirmation', 'token'
         );
 
-        $response = Password::reset($credentials, function ($user, $password) {
-            $this->resetPassword($user, $password);
-        });
+        $response = Password::reset( $credentials, function ( $user, $password ) {
+            $this->resetPassword( $user, $password );
+        } );
 
-        switch ($response) {
+        switch ( $response ) {
             case Password::PASSWORD_RESET:
-                Flash::success('Password successfully reset. You can now login.');
-                return redirect()->route('auth.login');
+                Flash::success( 'Password successfully reset. You can now login.' );
+
+                return redirect()->route( config( 'authcluster.login_name_space' ) . '.login' );
 
             default:
-                $response = $this->getResponseMessage($response);
+                $response = $this->getResponseMessage( $response );
+
                 return redirect()->back()
-                            ->withInput($request->only('email'))
-                            ->withErrors(['email' => $response]);
+                    ->withInput( $request->only( 'email' ) )
+                    ->withErrors( [ 'email' => $response ] );
         }
     }
 
-    protected function resetPassword($user, $password)
+    protected function resetPassword( $user, $password )
     {
         $user->password = $password;
 
@@ -84,7 +86,7 @@ trait ResetsPasswordsTrait
 
     protected function getResponseMessage( $response )
     {
-        switch ($response) {
+        switch ( $response ) {
             case 'passwords.user':
                 $response = 'This is not a valid request for password reset.';
                 break;

@@ -6,69 +6,69 @@ use Illuminate\Http\Request;
 trait AuthenticatesUsersTrait
 {
 
-/********** HTTP **********/
+    /********** HTTP **********/
 
     public function getLogin()
     {
-        return view('authcluster.auth.login');
+        return view( $this->viewsNamespace . 'auth.login' );
     }
 
     public function getLogout()
     {
         Auth::logout();
-        return redirect('/');
+
+        return redirect( '/' );
     }
 
     public function postLogin( Request $request )
     {
-        $this->validate($request, [
+        $this->validate( $request, [
             $this->loginUsername() => 'required', 'password' => 'required',
-        ]);
+        ] );
 
         $throttles = $this->isUsingThrottlesLoginsTrait();
 
-        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
-            return $this->sendLockoutResponse($request);
+        if ( $throttles && $this->hasTooManyLoginAttempts( $request ) ) {
+            return $this->sendLockoutResponse( $request );
         }
 
         //Attempt to login
-        if ( Auth::attempt($this->getCredentials($request), $request->has('remember')) ) {
-            return $this->handleUserWasAuthenticated($request, $throttles);
-        }
-        else {
+        if ( Auth::attempt( $this->getCredentials( $request ), $request->has( 'remember' ) ) ) {
+            return $this->handleUserWasAuthenticated( $request, $throttles );
+        } else {
             if ( $throttles ) {
-                $this->incrementLoginAttempts($request);
+                $this->incrementLoginAttempts( $request );
             }
 
-            return redirect()->route($this->loginPath())
-                ->withInput($request->only($this->loginUsername(), 'remember'))
-                ->withErrors([
+            return redirect()->route( $this->loginPath() )
+                ->withInput( $request->only( $this->loginUsername(), 'remember' ) )
+                ->withErrors( [
                     $this->loginUsername() => $this->getFailedLoginMessage(),
-                ]);
+                ] );
         }
     }
 
-/********** HELPERS **********/
+    /********** HELPERS **********/
 
-    protected function handleUserWasAuthenticated(Request $request, $throttles)
+    protected function handleUserWasAuthenticated( Request $request, $throttles )
     {
-        if ($throttles) {
-            $this->clearLoginAttempts($request);
+        if ( $throttles ) {
+            $this->clearLoginAttempts( $request );
         }
 
-        return redirect()->intended($this->redirectPath());
+        return redirect()->intended( $this->redirectPath() );
     }
 
     protected function isUsingThrottlesLoginsTrait()
     {
         return in_array(
-            ThrottlesLoginsTrait::class, class_uses_recursive(get_class($this))
+            ThrottlesLoginsTrait::class, class_uses_recursive( get_class( $this ) )
         );
     }
 
-    protected function getCredentials(Request $request)
+    protected function getCredentials( Request $request )
     {
-        return $request->only($this->loginUsername(), 'password');
+        return $request->only( $this->loginUsername(), 'password' );
     }
 
     protected function getFailedLoginMessage()
@@ -78,12 +78,12 @@ trait AuthenticatesUsersTrait
 
     public function loginPath()
     {
-        return property_exists($this, 'loginPath') ? $this->loginPath : '/auth/login';
+        return property_exists( $this, 'loginPath' ) ? $this->loginPath : '/auth/login';
     }
 
     public function loginUsername()
     {
-        return property_exists($this, 'username') ? $this->username : 'email';
+        return property_exists( $this, 'username' ) ? $this->username : 'email';
     }
 
 }

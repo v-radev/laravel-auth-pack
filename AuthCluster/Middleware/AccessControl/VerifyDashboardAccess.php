@@ -8,20 +8,21 @@ class VerifyDashboardAccess
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
+     *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle( $request, Closure $next )
     {
-        if (env('APP_ENV') === 'testing') {
-            return $next($request);
+        if ( env( 'APP_ENV' ) === 'testing' ) {
+            return $next( $request );
         }
 
-        if ( Auth::guest() || !Auth::user()->can('accessDashboard') ) {
-            return \Redirect::route('home');
+        if ( Auth::guest() || !Auth::user()->can( 'accessDashboard' ) ) {
+            return \Redirect::url( '/' );
         }
 
-        return $next($request);
+        return $next( $request );
     }
 }

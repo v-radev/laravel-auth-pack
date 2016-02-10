@@ -21,10 +21,10 @@ class RolesPermissionsTableSeeder extends Seeder
 
     public function run()
     {
-        \DB::table('role_permission')->truncate();
+        \DB::table( 'role_permission' )->truncate();
 
         foreach ( $this->rolePermissionRepo->getSeeds() as $rolePermission ) {
-            \App\Clusters\AuthCluster\Models\AccessControl\RolePermission::create($rolePermission);
+            \App\Clusters\AuthCluster\Models\AccessControl\RolePermission::create( $rolePermission );
         }
     }
 }

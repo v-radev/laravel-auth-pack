@@ -8,19 +8,22 @@ class VerifyUserHasPermission
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
+     * @param   array|string            $permission
+     *
      * @return mixed
      */
-    public function handle($request, Closure $next, $permission)
+    public function handle( $request, Closure $next, $permission )
     {
         $user = Auth::user();
 
-        if ( !$user || !$user->can($permission) ) {
-            abort(401);
+        if ( !$user || !$user->can( $permission ) ) {
+            abort( 401 );
+
             return NULL;
         }
 
-        return $next($request);
+        return $next( $request );
     }
 }
