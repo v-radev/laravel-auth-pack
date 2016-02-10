@@ -18,15 +18,9 @@ ___
 
 - Make a Cluster/ folder within app/ and copy AuthCluster/ inside
 - Make sure Cache is enabled and you have a valid working cache driver
-- In RouteServiceProvider@boot add:
+- In config/app.php to the providers array add:
 ```
-$router->bind('userName', function ($username) {
-    return \App\Clusters\AuthCluster\Models\User::whereUsername($username)->firstOrFail();
-});
-
-if ( !$this->app->routesAreCached() ) {
-        require realpath(base_path('app/Clusters/AuthCluster/routes.php'));
-}
+App\Clusters\AuthCluster\Providers\AuthClusterServiceProvider::class
 ```
 - In App/Http/Kernel add:
 ```
@@ -41,11 +35,8 @@ protected $routeMiddleware = [
 ```
 
 - In config/auth.php set 'model' => App\Clusters\AuthCluster\Models\User::class,
-- In config/view.php add realpath(base_path('app/Clusters/AuthCluster/Resources/views')), to 'paths' => []
-- Delete default user and password reset migrations and run 
-```
-php artisan migrate --path=/app/Clusters/AuthCluster/Resources/Database/migrations
-```
+
+- Delete default user and password reset migrations and run php artisan vendor:publish
 
 - Add seeds to DB Seeder
 ```
@@ -57,9 +48,8 @@ $this->call(App\Clusters\AuthCluster\Resources\Database\Seeds\UsersRolesTableSee
 $this->call(App\Clusters\AuthCluster\Resources\Database\Seeds\UsersRolesPermissionsTableSeeder::class);
 ```
 
-- Run aritsan db:seed
+- Run php artisan migrate --seed
 - Customize the default password reset template in resources/views/emails/password.blade.php or copy the one from 
 ```
 AuthCluster/Resources/views/authcluster/emails/password.blade.php
 ```
-- Copy AuthCluster/Resources/js and AuthCluster/Resources/css into public/
