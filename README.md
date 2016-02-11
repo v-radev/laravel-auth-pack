@@ -17,7 +17,9 @@ ___
 ### Installation
 
 - Make a Cluster/ folder within app/ and copy AuthCluster/ inside
+
 - Make sure Cache is enabled and you have a valid working cache driver
+
 - In config/app.php to the providers array add:
 ```
 App\Clusters\AuthCluster\Providers\AuthClusterServiceProvider::class
@@ -49,6 +51,7 @@ $this->call(App\Clusters\AuthCluster\Resources\Database\Seeds\UsersRolesPermissi
 ```
 
 - Run php artisan migrate --seed
+
 - Customize the default password reset template in resources/views/emails/password.blade.php or copy the one from 
 ```
 AuthCluster/Resources/views/authcluster/emails/password.blade.php
